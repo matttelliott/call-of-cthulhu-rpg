@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Call of Cthulhu 7e - Character Sheet</title>
+    <style>
+        /* ===== MOBILE-FIRST CSS - BASE STYLES FOR 360px+ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --bg: #ecf0f1;
+            --card-bg: #fff;
+            --border: #bdc3c7;
+            --text: #2c3e50;
+            --text-muted: #7f8c8d;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== HEADER (MOBILE FIRST - COMPACT) ===== */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.75rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .header-field label {
+            display: block;
+            font-size: 0.65rem;
+            opacity: 0.9;
+            margin-bottom: 0.125rem;
+        }
+
+        .header-field input {
+            width: 100%;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 0.875rem;
+            min-height: 40px;
+        }
+
+        .header-field input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            padding: 0;
+        }
+
+        /* ===== TABS (MOBILE - HORIZONTAL SCROLL) ===== */
+        .tabs {
+            display: flex;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            background: white;
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .tab {
+            flex: 0 0 auto;
+            padding: 1rem 1.5rem;
+            min-height: 48px; /* Touch target */
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            border-bottom-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tab:active {
+            background: var(--bg);
+        }
+
+        /* ===== TAB CONTENT ===== */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== CARD (MOBILE FIRST) ===== */
+        .card {
+            background: white;
+            margin-bottom: 0.5rem;
+            padding: 1rem;
+        }
+
+        .card h2 {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== CHARACTERISTICS (MOBILE: 2 COLUMNS, COMPACT) ===== */
+        .char-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .char-box {
+            display: flex;
+            flex-direction: column;
+            padding: 0.5rem;
+            background: linear-gradient(135deg, var(--bg), white);
+            border: 2px solid var(--border);
+            border-radius: 6px;
+        }
+
+        .char-box label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .char-box input {
+            width: 100%;
+            padding: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center;
+            border: 2px solid var(--accent);
+            border-radius: 4px;
+            min-height: 48px;
+        }
+
+        .char-box .half-fifth {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .char-box .half-fifth .value {
+            font-weight: bold;
+            color: var(--accent);
+            min-width: 24px;
+        }
+
+        /* ===== DERIVED STATS (MOBILE: 2 COLUMNS, COMPACT) ===== */
+        .derived-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .derived-stat {
+            display: flex;
+            flex-direction: column;
+            padding: 0.5rem;
+            background: var(--bg);
+            border-radius: 6px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .derived-stat label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+
+        .derived-stat .stat-value {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .derived-stat .stat-max {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.125rem;
+        }
+
+        .derived-stat input {
+            font-size: 1.125rem;
+            font-weight: bold;
+            padding: 0.5rem;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            text-align: center;
+            min-height: 48px;
+        }
+
+        /* ===== SKILLS (MOBILE: STACK VERTICALLY) ===== */
+        .skill-category {
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-category h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .skill-row {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            background: white;
+        }
+
+        .skill-row:active {
+            background: var(--bg);
+        }
+
+        .skill-name {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .skill-values {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .skill-value {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-value label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .skill-value input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            text-align: center;
+            min-height: 44px;
+        }
+
+        .skill-value .readonly {
+            background: var(--bg);
+            color: var(--text-muted);
+        }
+
+        /* ===== WEAPONS (MOBILE: STACK) ===== */
+        .weapon-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .weapon-item {
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 8px;
+        }
+
+        .weapon-item input,
+        .weapon-item select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            min-height: 48px;
+        }
+
+        .weapon-item label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .weapon-remove {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        /* ===== BUTTONS (MOBILE: FULL WIDTH) ===== */
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            min-height: 48px;
+            transition: all 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1rem;
+            min-height: 48px;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        /* ===== STATUS BAR (HIDDEN - AUTO-SAVE ONLY) ===== */
+        .status-bar {
+            display: none;
+        }
+
+        /* ===== SPACING UTILITIES ===== */
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-safe { margin-bottom: 1rem; } /* Bottom spacing */
+
+        /* ===== TABLET (768px+) ===== */
+        @media (min-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header-info {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .card {
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                margin-bottom: 1rem;
+                padding: 1.5rem;
+            }
+
+            .char-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .derived-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .skill-values {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .btn {
+                width: auto;
+                padding: 0.75rem 1.5rem;
+            }
+
+            .weapon-list {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        /* ===== DESKTOP (1024px+) ===== */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .header-info {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .char-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .derived-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .weapon-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <h1>Call of Cthulhu 7e</h1>
+        <div class="header-info">
+            <div class="header-field">
+                <label for="characterName">Character Name</label>
+                <input type="text" id="characterName" placeholder="Name">
+            </div>
+            <div class="header-field">
+                <label for="occupation">Occupation</label>
+                <input type="text" id="occupation" placeholder="Occupation">
+            </div>
+            <div class="header-field">
+                <label for="age">Age</label>
+                <input type="number" id="age" placeholder="Age">
+            </div>
+            <div class="header-field">
+                <label for="residence">Residence</label>
+                <input type="text" id="residence" placeholder="Location">
+            </div>
+        </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <div class="tab active" data-tab="characteristics">Characteristics</div>
+        <div class="tab" data-tab="skills">Skills</div>
+        <div class="tab" data-tab="combat">Combat</div>
+        <div class="tab" data-tab="background">Background</div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- TAB 1: CHARACTERISTICS -->
+        <div id="characteristics" class="tab-content active">
+            <div class="card">
+                <h2>Characteristics</h2>
+                <div class="char-grid">
+                    <div class="char-box">
+                        <label>STR</label>
+                        <input type="number" id="str" min="0" max="100" value="50">
+                        <div class="half-fifth">
+                            <span>½: <span class="value" id="str-half">25</span></span>
+                            <span>⅕: <span class="value" id="str-fifth">10</span></span>
+                        </div>
+                    </div>
+                    <div class="char-box">
+                        <label>CON</label>
+                        <input type="number" id="con" min="0" max="100" value="50">
+                        <div class="half-fifth">
+                            <span>½: <span class="value" id="con-half">25</span></span>
+                            <span>⅕: <span class="value" id="con-fifth">10</span></span>
+                        </div>
+                    </div>
+                    <div class="char-box">
+                        <label>SIZ</label>
+                        <input type="number" id="siz" min="0" max="100" value="50">
+                        <div class="half-fifth">
+                            <span>½: <span class="value" id="siz-half">25</span></span>
+                            <span>⅕: <span class="value" id="siz-fifth">10</span></span>
+                        </div>
+                    </div>
+                    <div class="char-box">
+                        <label>DEX</label>
+                        <input type="number" id="dex" min="0" max="100" value="50">
+                        <div class="half-fifth">
+                            <span>½: <span class="value" id="dex-half">25</span></span>
+                            <span>⅕: <span class="value" id="dex-fifth">10</span></span>
+                        </div>
+                    </div>
+                    <div class="char-box">
+                        <label>APP</label>
+                        <input type="number" id="app" min="0" max="100" value="50">
+                        <div class="half-fifth">
+                            <span>½: <span class="value" id="app-half">25</span></span>
+                            <span>⅕: <span class="value" id="app-fifth">10</span></span>
+                        </div>
+                    </div>
+                    <div class="char-box">
+                        <label>INT</label>
+                        <input type="number" id="int" min="0" max="100" value="50">
+                        <div class="half-fifth">
+                            <span>½: <span class="value" id="int-half">25</span></span>
+                            <span>⅕: <span class="value" id="int-fifth">10</span></span>
+                        </div>
+                    </div>
+                    <div class="char-box">
+                        <label>POW</label>
+                        <input type="number" id="pow" min="0" max="100" value="50">
+                        <div class="half-fifth">
+                            <span>½: <span class="value" id="pow-half">25</span></span>
+                            <span>⅕: <span class="value" id="pow-fifth">10</span></span>
+                        </div>
+                    </div>
+                    <div class="char-box">
+                        <label>EDU</label>
+                        <input type="number" id="edu" min="0" max="100" value="50">
+                        <div class="half-fifth">
+                            <span>½: <span class="value" id="edu-half">25</span></span>
+                            <span>⅕: <span class="value" id="edu-fifth">10</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Derived Attributes</h2>
+                <div class="derived-grid">
+                    <div class="derived-stat">
+                        <label>Hit Points</label>
+                        <div class="stat-value"><span id="hp-current">10</span> / <span id="hp-max">10</span></div>
+                    </div>
+                    <div class="derived-stat">
+                        <label>Magic Points</label>
+                        <div class="stat-value"><span id="mp-current">10</span> / <span id="mp-max">10</span></div>
+                    </div>
+                    <div class="derived-stat">
+                        <label>Sanity</label>
+                        <div class="stat-value"><span id="san-current">50</span> / <span id="san-max">99</span></div>
+                        <div class="stat-max">Start: <span id="san-start">50</span></div>
+                    </div>
+                    <div class="derived-stat">
+                        <label>Luck</label>
+                        <input type="number" id="luck" min="0" max="100" value="50">
+                    </div>
+                    <div class="derived-stat">
+                        <label>Damage Bonus</label>
+                        <div class="stat-value" id="damage-bonus">0</div>
+                    </div>
+                    <div class="derived-stat">
+                        <label>Build</label>
+                        <div class="stat-value" id="build">0</div>
+                    </div>
+                    <div class="derived-stat">
+                        <label>Move Rate</label>
+                        <div class="stat-value" id="move-rate">8</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: SKILLS -->
+        <div id="skills" class="tab-content">
+            <div class="card mb-safe">
+                <h2>Skills</h2>
+
+                <div class="skill-category">
+                    <h4>Investigation</h4>
+                    <div class="skill-row" data-skill="Accounting">
+                        <div class="skill-name">Accounting</div>
+                        <div class="skill-values">
+                            <div class="skill-value">
+                                <label>Base</label>
+                                <input type="number" class="readonly" value="5" readonly>
+                            </div>
+                            <div class="skill-value">
+                                <label>Personal</label>
+                                <input type="number" class="skill-personal" value="0">
+                            </div>
+                            <div class="skill-value">
+                                <label>Total</label>
+                                <input type="number" class="skill-total readonly" value="5" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-row" data-skill="Library Use">
+                        <div class="skill-name">Library Use</div>
+                        <div class="skill-values">
+                            <div class="skill-value">
+                                <label>Base</label>
+                                <input type="number" class="readonly" value="20" readonly>
+                            </div>
+                            <div class="skill-value">
+                                <label>Personal</label>
+                                <input type="number" class="skill-personal" value="0">
+                            </div>
+                            <div class="skill-value">
+                                <label>Total</label>
+                                <input type="number" class="skill-total readonly" value="20" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-row" data-skill="Spot Hidden">
+                        <div class="skill-name">Spot Hidden</div>
+                        <div class="skill-values">
+                            <div class="skill-value">
+                                <label>Base</label>
+                                <input type="number" class="readonly" value="25" readonly>
+                            </div>
+                            <div class="skill-value">
+                                <label>Personal</label>
+                                <input type="number" class="skill-personal" value="0">
+                            </div>
+                            <div class="skill-value">
+                                <label>Total</label>
+                                <input type="number" class="skill-total readonly" value="25" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h4>Interpersonal</h4>
+                    <div class="skill-row" data-skill="Charm">
+                        <div class="skill-name">Charm</div>
+                        <div class="skill-values">
+                            <div class="skill-value">
+                                <label>Base</label>
+                                <input type="number" class="readonly" value="15" readonly>
+                            </div>
+                            <div class="skill-value">
+                                <label>Personal</label>
+                                <input type="number" class="skill-personal" value="0">
+                            </div>
+                            <div class="skill-value">
+                                <label>Total</label>
+                                <input type="number" class="skill-total readonly" value="15" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-row" data-skill="Intimidate">
+                        <div class="skill-name">Intimidate</div>
+                        <div class="skill-values">
+                            <div class="skill-value">
+                                <label>Base</label>
+                                <input type="number" class="readonly" value="15" readonly>
+                            </div>
+                            <div class="skill-value">
+                                <label>Personal</label>
+                                <input type="number" class="skill-personal" value="0">
+                            </div>
+                            <div class="skill-value">
+                                <label>Total</label>
+                                <input type="number" class="skill-total readonly" value="15" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-row" data-skill="Persuade">
+                        <div class="skill-name">Persuade</div>
+                        <div class="skill-values">
+                            <div class="skill-value">
+                                <label>Base</label>
+                                <input type="number" class="readonly" value="10" readonly>
+                            </div>
+                            <div class="skill-value">
+                                <label>Personal</label>
+                                <input type="number" class="skill-personal" value="0">
+                            </div>
+                            <div class="skill-value">
+                                <label>Total</label>
+                                <input type="number" class="skill-total readonly" value="10" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h4>Physical</h4>
+                    <div class="skill-row" data-skill="Climb">
+                        <div class="skill-name">Climb</div>
+                        <div class="skill-values">
+                            <div class="skill-value">
+                                <label>Base</label>
+                                <input type="number" class="readonly" value="20" readonly>
+                            </div>
+                            <div class="skill-value">
+                                <label>Personal</label>
+                                <input type="number" class="skill-personal" value="0">
+                            </div>
+                            <div class="skill-value">
+                                <label>Total</label>
+                                <input type="number" class="skill-total readonly" value="20" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-row" data-skill="Dodge">
+                        <div class="skill-name">Dodge</div>
+                        <div class="skill-values">
+                            <div class="skill-value">
+                                <label>Base</label>
+                                <input type="number" class="readonly" id="dodge-base" value="25" readonly>
+                            </div>
+                            <div class="skill-value">
+                                <label>Personal</label>
+                                <input type="number" class="skill-personal" value="0">
+                            </div>
+                            <div class="skill-value">
+                                <label>Total</label>
+                                <input type="number" class="skill-total readonly" id="dodge-total" value="25" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-row" data-skill="Stealth">
+                        <div class="skill-name">Stealth</div>
+                        <div class="skill-values">
+                            <div class="skill-value">
+                                <label>Base</label>
+                                <input type="number" class="readonly" value="20" readonly>
+                            </div>
+                            <div class="skill-value">
+                                <label>Personal</label>
+                                <input type="number" class="skill-personal" value="0">
+                            </div>
+                            <div class="skill-value">
+                                <label>Total</label>
+                                <input type="number" class="skill-total readonly" value="20" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: COMBAT -->
+        <div id="combat" class="tab-content">
+            <div class="card mb-safe">
+                <h2>Weapons</h2>
+                <div class="weapon-list" id="weaponList">
+                    <div class="weapon-item">
+                        <label>Weapon Name</label>
+                        <input type="text" placeholder="e.g., .45 Revolver" class="weapon-name">
+
+                        <label>Skill %</label>
+                        <input type="number" placeholder="25" class="weapon-skill">
+
+                        <label>Damage</label>
+                        <input type="text" placeholder="1D10" class="weapon-damage">
+
+                        <label>Range</label>
+                        <input type="text" placeholder="15 yards" class="weapon-range">
+
+                        <label>Ammo</label>
+                        <input type="number" placeholder="6" class="weapon-ammo">
+
+                        <button class="btn btn-danger weapon-remove">Remove</button>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-2" id="addWeapon">+ Add Weapon</button>
+            </div>
+
+            <div class="card">
+                <h2>Equipment</h2>
+                <div class="form-group">
+                    <label>Cash & Assets</label>
+                    <input type="text" id="cash" placeholder="$500">
+                </div>
+                <div class="form-group">
+                    <label>Possessions</label>
+                    <textarea id="possessions" placeholder="List your equipment..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: BACKGROUND -->
+        <div id="background" class="tab-content">
+            <div class="card mb-safe">
+                <h2>Background</h2>
+
+                <div class="form-group">
+                    <label>Personal Description</label>
+                    <textarea id="description" placeholder="Physical appearance, mannerisms..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Ideology/Beliefs</label>
+                    <textarea id="ideology" placeholder="What you believe in..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Significant People</label>
+                    <textarea id="people" placeholder="Important people in your life..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Meaningful Locations</label>
+                    <textarea id="locations" placeholder="Places that matter to you..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Treasured Possessions</label>
+                    <textarea id="treasures" placeholder="Items of sentimental value..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Traits & Backstory</label>
+                    <textarea id="backstory" placeholder="Your character's story..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="notes" placeholder="Additional notes..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+        <div class="status-indicator"></div>
+        <span class="status-text" id="saveStatus">Auto-saved</span>
+        <button class="btn btn-primary" id="manualSave">Save</button>
+    </div>
+
+    <script>
+        // ===== STORAGE ABSTRACTION LAYER =====
+        class ICharacterStorage {
+            async save(character) { throw new Error('Not implemented'); }
+            async load(id) { throw new Error('Not implemented'); }
+            async list() { throw new Error('Not implemented'); }
+            async delete(id) { throw new Error('Not implemented'); }
+        }
+
+        class LocalStorageCharacterStorage extends ICharacterStorage {
+            constructor() {
+                super();
+                this.STORAGE_KEY = 'coc_character_v1';
+            }
+
+            async save(character) {
+                try {
+                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(character));
+                    return true;
+                } catch (error) {
+                    console.error('Save error:', error);
+                    return false;
+                }
+            }
+
+            async load(id = this.STORAGE_KEY) {
+                try {
+                    const data = localStorage.getItem(id);
+                    return data ? JSON.parse(data) : null;
+                } catch (error) {
+                    console.error('Load error:', error);
+                    return null;
+                }
+            }
+
+            async list() {
+                return [this.STORAGE_KEY];
+            }
+
+            async delete(id = this.STORAGE_KEY) {
+                localStorage.removeItem(id);
+                return true;
+            }
+        }
+
+        // Initialize storage (ABSTRACTION POINT: swap implementation here)
+        const storage = new LocalStorageCharacterStorage();
+
+        // ===== CHARACTER DATA MODEL =====
+        let character = {
+            name: '',
+            occupation: '',
+            age: 25,
+            residence: '',
+            characteristics: {
+                str: 50, con: 50, siz: 50, dex: 50,
+                app: 50, int: 50, pow: 50, edu: 50
+            },
+            derived: {
+                hp: 10, hpMax: 10,
+                mp: 10, mpMax: 10,
+                san: 50, sanMax: 99, sanStart: 50,
+                luck: 50,
+                damageBonus: '0',
+                build: 0,
+                moveRate: 8
+            },
+            skills: {},
+            weapons: [],
+            cash: '',
+            possessions: '',
+            description: '',
+            ideology: '',
+            people: '',
+            locations: '',
+            treasures: '',
+            backstory: '',
+            notes: ''
+        };
+
+        // ===== CALCULATIONS =====
+        function calculateHalfFifth(value) {
+            return {
+                half: Math.floor(value / 2),
+                fifth: Math.floor(value / 5)
+            };
+        }
+
+        function calculateHP() {
+            const hp = Math.ceil((character.characteristics.con + character.characteristics.siz) / 10);
+            character.derived.hp = hp;
+            character.derived.hpMax = hp;
+            updateDisplay();
+        }
+
+        function calculateMP() {
+            const mp = Math.floor(character.characteristics.pow / 5);
+            character.derived.mp = mp;
+            character.derived.mpMax = mp;
+            updateDisplay();
+        }
+
+        function calculateSanity() {
+            character.derived.san = character.characteristics.pow;
+            character.derived.sanStart = character.characteristics.pow;
+            updateDisplay();
+        }
+
+        function calculateDamageBonus() {
+            const total = character.characteristics.str + character.characteristics.siz;
+            let db = '0', build = 0;
+
+            if (total < 65) { db = '-2'; build = -2; }
+            else if (total < 85) { db = '-1'; build = -1; }
+            else if (total < 125) { db = '0'; build = 0; }
+            else if (total < 165) { db = '+1D4'; build = 1; }
+            else if (total < 205) { db = '+1D6'; build = 2; }
+            else { db = '+2D6'; build = 3; }
+
+            character.derived.damageBonus = db;
+            character.derived.build = build;
+            updateDisplay();
+        }
+
+        function calculateMoveRate() {
+            const age = parseInt(character.age) || 25;
+            const dex = character.characteristics.dex;
+            const str = character.characteristics.str;
+            const siz = character.characteristics.siz;
+
+            let move = 8;
+            if (age >= 80) move = 5;
+            else if (age >= 70) move = 6;
+            else if (age >= 60) move = 7;
+            else if (age >= 50) move = 7;
+            else if (age >= 40) move = 8;
+
+            if (str < siz && dex < siz) move = Math.max(1, move - 1);
+            if (str > siz && dex > siz) move = move + 1;
+
+            character.derived.moveRate = move;
+            updateDisplay();
+        }
+
+        function calculateDodge() {
+            const dodge = Math.floor(character.characteristics.dex / 2);
+            const dodgeBase = document.getElementById('dodge-base');
+            const dodgeTotal = document.getElementById('dodge-total');
+            if (dodgeBase) dodgeBase.value = dodge;
+            if (dodgeTotal) dodgeTotal.value = dodge;
+        }
+
+        // ===== UPDATE DISPLAY =====
+        function updateDisplay() {
+            // Update all derived stats
+            document.getElementById('hp-current').textContent = character.derived.hp;
+            document.getElementById('hp-max').textContent = character.derived.hpMax;
+            document.getElementById('mp-current').textContent = character.derived.mp;
+            document.getElementById('mp-max').textContent = character.derived.mpMax;
+            document.getElementById('san-current').textContent = character.derived.san;
+            document.getElementById('san-max').textContent = character.derived.sanMax;
+            document.getElementById('san-start').textContent = character.derived.sanStart;
+            document.getElementById('damage-bonus').textContent = character.derived.damageBonus;
+            document.getElementById('build').textContent = character.derived.build;
+            document.getElementById('move-rate').textContent = character.derived.moveRate;
+        }
+
+        // ===== AUTO-SAVE =====
+        let saveTimeout;
+        function autoSave() {
+            clearTimeout(saveTimeout);
+            const status = document.getElementById('saveStatus');
+            status.textContent = 'Saving...';
+
+            saveTimeout = setTimeout(async () => {
+                await storage.save(character);
+                status.textContent = 'Auto-saved';
+            }, 500);
+        }
+
+        // ===== EVENT LISTENERS =====
+        // Characteristics
+        ['str', 'con', 'siz', 'dex', 'app', 'int', 'pow', 'edu'].forEach(stat => {
+            const input = document.getElementById(stat);
+            if (!input) return;
+
+            input.addEventListener('input', (e) => {
+                const value = parseInt(e.target.value) || 0;
+                character.characteristics[stat] = value;
+
+                // Update half/fifth
+                const { half, fifth } = calculateHalfFifth(value);
+                document.getElementById(`${stat}-half`).textContent = half;
+                document.getElementById(`${stat}-fifth`).textContent = fifth;
+
+                // Recalculate derived stats
+                calculateHP();
+                calculateMP();
+                calculateSanity();
+                calculateDamageBonus();
+                calculateMoveRate();
+                calculateDodge();
+                autoSave();
+            });
+        });
+
+        // Header fields
+        ['characterName', 'occupation', 'age', 'residence'].forEach(field => {
+            const input = document.getElementById(field);
+            if (!input) return;
+            input.addEventListener('input', (e) => {
+                const key = field === 'characterName' ? 'name' : field;
+                character[key] = e.target.value;
+                if (field === 'age') calculateMoveRate();
+                autoSave();
+            });
+        });
+
+        // Luck
+        const luckInput = document.getElementById('luck');
+        if (luckInput) {
+            luckInput.addEventListener('input', (e) => {
+                character.derived.luck = parseInt(e.target.value) || 0;
+                autoSave();
+            });
+        }
+
+        // Skills
+        document.querySelectorAll('.skill-personal').forEach(input => {
+            input.addEventListener('input', (e) => {
+                const row = e.target.closest('.skill-row');
+                const skillName = row.dataset.skill;
+                const personal = parseInt(e.target.value) || 0;
+                const base = parseInt(row.querySelector('.readonly').value) || 0;
+                const total = base + personal;
+
+                row.querySelector('.skill-total').value = total;
+                character.skills[skillName] = { base, personal, total };
+                autoSave();
+            });
+        });
+
+        // Weapons
+        let weaponCount = 1;
+        document.getElementById('addWeapon').addEventListener('click', () => {
+            const weaponList = document.getElementById('weaponList');
+            const weaponItem = document.createElement('div');
+            weaponItem.className = 'weapon-item';
+            weaponItem.innerHTML = `
+                <label>Weapon Name</label>
+                <input type="text" placeholder="e.g., Knife" class="weapon-name">
+                <label>Skill %</label>
+                <input type="number" placeholder="25" class="weapon-skill">
+                <label>Damage</label>
+                <input type="text" placeholder="1D4" class="weapon-damage">
+                <label>Range</label>
+                <input type="text" placeholder="Touch" class="weapon-range">
+                <label>Ammo</label>
+                <input type="number" placeholder="-" class="weapon-ammo">
+                <button class="btn btn-danger weapon-remove">Remove</button>
+            `;
+            weaponList.appendChild(weaponItem);
+            weaponCount++;
+        });
+
+        document.getElementById('weaponList').addEventListener('click', (e) => {
+            if (e.target.classList.contains('weapon-remove')) {
+                e.target.closest('.weapon-item').remove();
+            }
+        });
+
+        // Background fields
+        ['cash', 'possessions', 'description', 'ideology', 'people', 'locations', 'treasures', 'backstory', 'notes'].forEach(field => {
+            const input = document.getElementById(field);
+            if (!input) return;
+            input.addEventListener('input', (e) => {
+                character[field] = e.target.value;
+                autoSave();
+            });
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+
+                // Update tab buttons
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Update tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(targetTab).classList.add('active');
+            });
+        });
+
+        // Manual save
+        document.getElementById('manualSave').addEventListener('click', async () => {
+            const status = document.getElementById('saveStatus');
+            status.textContent = 'Saving...';
+            await storage.save(character);
+            status.textContent = 'Saved!';
+            setTimeout(() => {
+                status.textContent = 'Auto-saved';
+            }, 2000);
+        });
+
+        // ===== INITIALIZATION =====
+        async function init() {
+            const saved = await storage.load();
+            if (saved) {
+                character = saved;
+
+                // Restore UI
+                document.getElementById('characterName').value = character.name || '';
+                document.getElementById('occupation').value = character.occupation || '';
+                document.getElementById('age').value = character.age || 25;
+                document.getElementById('residence').value = character.residence || '';
+
+                // Restore characteristics
+                Object.keys(character.characteristics).forEach(stat => {
+                    const input = document.getElementById(stat);
+                    if (input) {
+                        input.value = character.characteristics[stat];
+                        input.dispatchEvent(new Event('input'));
+                    }
+                });
+
+                document.getElementById('luck').value = character.derived.luck;
+
+                // Restore background
+                ['cash', 'possessions', 'description', 'ideology', 'people', 'locations', 'treasures', 'backstory', 'notes'].forEach(field => {
+                    const input = document.getElementById(field);
+                    if (input) input.value = character[field] || '';
+                });
+            }
+
+            // Initial calculations
+            calculateHP();
+            calculateMP();
+            calculateSanity();
+            calculateDamageBonus();
+            calculateMoveRate();
+            calculateDodge();
+        }
+
+        // Start app
+        init();
+    </script>
+</body>
+</html>
